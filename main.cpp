@@ -25,10 +25,10 @@ std::string getTypeName(const T &variable)
 Population algogenetique(Population &Pop_initiale, int nb_iter, int nb_reproducteurs)
 {
 
-// Génération de la population initiale avec des chemins corrects
+    // Génération de la population initiale avec des chemins corrects
     Population population_initiale;
     int nombre_chemins = Pop_initiale.getTaillePopulation(); // Nombre de chemins à générer
-    Ville city; // Définissez votre objet Ville avec les coordonnées des villes
+    Ville city;                                              // Définissez votre objet Ville avec les coordonnées des villes
     population_initiale = generateur_chemins(nombre_chemins, city, Pop_initiale);
 
     //====================================================================================================================================
@@ -71,19 +71,9 @@ Population algogenetique(Population &Pop_initiale, int nb_iter, int nb_reproduct
         // mutation des enfants
         for (int i = 0; i < nb_reproducteurs; i++)
         {
-            Individu* enfant =enfants.getIndividu(i);
+            Individu *enfant = enfants.getIndividu(i);
             enfant->mutationAleatoire();
             enfant->mutationPermutation();
-            
-            int s=0;
-            while (!enfant->respecteContraintes() && s<1000)
-            {
-                // Générer un nouvel enfant à la place de l'enfant non conforme
-                enfants.remplacerIndividu(i, reproduction(parents_selectionnes, FactoryMethod, CheminType).getIndividu(0));
-                enfant = enfants.getIndividu(i);
-                enfant->mutationAleatoire(); // Effectuer une mutation sur le nouvel enfant
-                ++s; 
-            }
         }
 
         //====================================================================================================================================
@@ -94,9 +84,9 @@ Population algogenetique(Population &Pop_initiale, int nb_iter, int nb_reproduct
         double proba_tournoi_conserves;
         // sélection des parents que l'on va conservés pour la prochaine génération
         parents_conserves = selection_eugenisme(population_parents, nb_reproducteurs);
-        //parents_conserves = selection_roulette(population_parents, nb_parents_conserves);
-        //parents_conserves = selection_rang(population_parents, nb_parents_conserves);
-        //parents_conserves = selection_tournoi(population_parents, nb_parents_conserves, proba_tournoi_conserves);
+        // parents_conserves = selection_roulette(population_parents, nb_parents_conserves);
+        // parents_conserves = selection_rang(population_parents, nb_parents_conserves);
+        // parents_conserves = selection_tournoi(population_parents, nb_parents_conserves, proba_tournoi_conserves);
 
         enfants = enfants + parents_conserves;
 
@@ -133,7 +123,7 @@ int main()
 
     for (const auto &row : content)
     {
-        //cout << row[0];
+        // cout << row[0];
         citynumber.push_back(row[0]);           // Première colonne : indices
         coord.push_back(Point(row[1], row[2])); // Deuxième et troisième colonnes : coordonnées x et y
     }
@@ -163,17 +153,17 @@ int main()
     printf("population generee=");
     generee.print(cout);
 
-    //paths.print(cout);
+    // paths.print(cout);
 
     int nombre_iterations = 4;
-    int nombre_reproducteurs = 10;
+    int nombre_reproducteurs = 5;
 
     Population resultat = algogenetique(generee, nombre_iterations, nombre_reproducteurs);
     Population resultat_2 = trierPopulation(resultat);
     printf("resultat_2=");
     resultat_2.print(cout);
     Individu *I = resultat_2.getIndividu(0); // je prends le chemin avec le poids le plus petit
-    vector<double> sol = I->genes;
+    vector<int> sol = I->genes;
 
     //===========================================================================================
     //                                       SORTIE
@@ -182,4 +172,3 @@ int main()
 
     return 0;
 }
-

@@ -119,11 +119,11 @@ public:
     {
         type = IndividuType::CheminType;
     };
-    Chemin(vector<double> premiersGenes) : Individu(premiersGenes)
+    Chemin(vector<int> premiersGenes) : Individu(premiersGenes)
     {
         type = IndividuType::CheminType;
     };
-    Chemin(const Chemin &c) : Chemin(c.genes){}
+    Chemin(const Chemin &c) : Chemin(c.genes) {}
 
     void print(ostream &out) const; // afficher les villes dans le chemin
     double poids() const;           // calcul de la distance totale parcourue dans la tournée (adaptation)
@@ -135,7 +135,7 @@ public:
     }
     Individu *clone() const;
     Chemin *clone();
-    static void setVille(const Ville& v)
+    static void setVille(const Ville &v)
     {
         vsp = v;
     }
@@ -186,13 +186,13 @@ avec tous ces chemins possibles*/
 /*Population &generateur_chemins(int nombre_chemins, const Ville city, Population &P)
 {
     Chemin::setVille(city);
-    
+
     srand(time(NULL));
 
     for (int j = 0; j < nombre_chemins; j++)
     {
         list<int> indice;
-        vector<double> trace;//vecteur pour stocker le chemin 
+        vector<double> trace;//vecteur pour stocker le chemin
 
         // Remplissage du vecteur d'indices
         for (int i = 0; i < city.nombre_villes(); i++)
@@ -216,13 +216,15 @@ avec tous ces chemins possibles*/
     }
     return P;
 }*/
-//changement de la fonction pour tester les contraintes et ne pas prendre deux fois la meme ville 
-Population generateur_chemins(int nombre_chemins, const Ville& city, Population& P) {
+// changement de la fonction pour tester les contraintes et ne pas prendre deux fois la meme ville
+Population generateur_chemins(int nombre_chemins, const Ville &city, Population &P)
+{
     Chemin::setVille(city);
     srand(time(NULL));
 
-    for (int j = 0; j < nombre_chemins; j++) {
-        vector<double> trace; // Vecteur pour stocker le chemin
+    for (int j = 0; j < nombre_chemins; j++)
+    {
+        vector<int> trace; // Vecteur pour stocker le chemin
 
         vector<bool> visited(city.nombre_villes(), false); // Indique si une ville a été visitée
 
@@ -232,11 +234,14 @@ Population generateur_chemins(int nombre_chemins, const Ville& city, Population&
         visited[currentCityIndex] = true;
 
         // Construire le chemin en sélectionnant aléatoirement une ville non visitée à chaque étape
-        while (trace.size() < city.nombre_villes()) {
+        while (trace.size() < city.nombre_villes())
+        {
             // Construire une liste de villes non visitées
             vector<int> availableCities;
-            for (int i = 0; i < city.nombre_villes(); ++i) {
-                if (!visited[i]) {
+            for (int i = 0; i < city.nombre_villes(); ++i)
+            {
+                if (!visited[i])
+                {
                     availableCities.push_back(i);
                 }
             }
@@ -245,7 +250,8 @@ Population generateur_chemins(int nombre_chemins, const Ville& city, Population&
             int nextCityIndex = availableCities[rand() % availableCities.size()];
 
             // Vérifier si le chemin entre la ville courante et la prochaine ville n'est pas déjà dans le chemin
-            if (nextCityIndex != currentCityIndex) {
+            if (nextCityIndex != currentCityIndex)
+            {
                 trace.push_back(nextCityIndex);
                 visited[nextCityIndex] = true;
                 currentCityIndex = nextCityIndex;
@@ -255,13 +261,11 @@ Population generateur_chemins(int nombre_chemins, const Ville& city, Population&
         // Ajouter la première ville à la fin pour fermer la boucle
         trace.push_back(trace.front());
 
-        Chemin* path = new Chemin(trace);
+        Chemin *path = new Chemin(trace);
         P.addIndividu(path);
     }
 
     return P;
 }
-
-
 
 #endif

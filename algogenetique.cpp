@@ -56,7 +56,7 @@ Individu *Individu::mutationAleatoire()
     return this;
 }
 
-bool Individu:: respecteContraintes() const
+bool Individu::respecteContraintes() const
 {
     // Vérifie si une ville est visitée plus d'une fois
     vector<bool> visited(nombreGenes, false);
@@ -119,7 +119,7 @@ void Population::print(ostream &out) const
 
 // création de deux enfants issus de 2 parents
 // prend en argument les 2 parents, + un pointeur vers la fonction de factory méthode cf Factory.hpp
-Population hybridation(Individu* parent_1, Individu* parent_2, Individu *(*pointeur_FactoryMethod)(IndividuType type), IndividuType type)
+Population hybridation(Individu *parent_1, Individu *parent_2, Individu *(*pointeur_FactoryMethod)(IndividuType type), IndividuType type)
 
 {
     if (parent_1->type != parent_2->type)
@@ -150,8 +150,8 @@ Population hybridation(Individu* parent_1, Individu* parent_2, Individu *(*point
     int point_coupure = rand() % taille;
 
     // créer les vecteurs de gènes des enfants - leur taille égale à celle des parents avec comme valeur par défaut -1
-    vector<double> genes1 = parent_1->genes;
-    vector<double> genes2 = parent_2->genes;
+    vector<int> genes1 = parent_1->genes;
+    vector<int> genes2 = parent_2->genes;
 
     // Copiez les parties restantes des gènes du parent 2 et 1
     for (int i = point_coupure; i < parent_1->nombreGenes; ++i)
@@ -162,6 +162,27 @@ Population hybridation(Individu* parent_1, Individu* parent_2, Individu *(*point
 
     child1->setGenes(genes1);
     child2->setGenes(genes2);
+
+    while (child1->respecteContraintes() == false && child2->respecteContraintes())
+    {
+
+        // Choisissez un point de coupure aléatoire entre 0 et le nombre de gènes
+        point_coupure = rand() % taille;
+
+        // créer les vecteurs de gènes des enfants - leur taille égale à celle des parents avec comme valeur par défaut -1
+        genes1 = parent_1->genes;
+        genes2 = parent_2->genes;
+
+        // Copiez les parties restantes des gènes du parent 2 et 1
+        for (int i = point_coupure; i < parent_1->nombreGenes; ++i)
+        {
+            genes1[i] = parent_2->genes[i];
+            genes2[i] = parent_1->genes[i];
+        }
+
+        child1->setGenes(genes1);
+        child2->setGenes(genes2);
+    }
 
     Population enfants = Population({child1, child2});
 
@@ -190,12 +211,11 @@ Population reproduction(const Population parents, Individu *(*pointeur_FactoryMe
         if (i + 1 < parentsMelanges.getTaillePopulation())
         {
             // Obtient les deux parents de manière aléatoire
-            Individu* parent1 = parentsMelanges.getIndividu(i);
-            Individu* parent2 = parentsMelanges.getIndividu(i + 1);
+            Individu *parent1 = parentsMelanges.getIndividu(i);
+            Individu *parent2 = parentsMelanges.getIndividu(i + 1);
 
             // Effectue l'hybridation pour obtenir les enfants
             Population enfants_crees = hybridation(parent1, parent2, pointeur_FactoryMethod, type);
-        
 
             // Ajoute les enfants à la population des descendants
             enfants = enfants + enfants_crees;
@@ -209,11 +229,11 @@ Population reproduction(const Population parents, Individu *(*pointeur_FactoryMe
     return enfants;
 }
 
-void Population::remplacerIndividu(int index, Individu* nouvelIndividu)
+void Population::remplacerIndividu(int index, Individu *nouvelIndividu)
 {
     if (index >= 0 && index < taille_Population)
     {
-        delete individus[index]; // Supprimer l'individu existant à l'index donné
+        delete individus[index];           // Supprimer l'individu existant à l'index donné
         individus[index] = nouvelIndividu; // Remplacer par le nouvel individu
     }
     else

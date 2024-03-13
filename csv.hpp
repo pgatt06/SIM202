@@ -7,12 +7,10 @@
 #include <vector>
 #include <sstream>
 
-
-
 using namespace std;
-//fonction pour lire le fichier 
+// fonction pour lire le fichier
 vector<vector<double>> csv_reader(string fname);
 
-//fonction pour récupérer les données et avoir un nouveau fichier 
-void csv_write(vector<double> parcours);
+// fonction pour récupérer les données et avoir un nouveau fichier
+void csv_write(vector<int> parcours);
 #endif

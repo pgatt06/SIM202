@@ -28,7 +28,7 @@ class Individu
 {
 
 public:
-    vector<double> genes;
+    vector<int> genes;
     int nombreGenes;
 
     //=================================================================
@@ -36,7 +36,7 @@ public:
     //=================================================================
 
     Individu() : type(IndividuType::NoneType){};
-    Individu(vector<double> premiersGenes)
+    Individu(vector<int> premiersGenes)
     {
         genes = premiersGenes;
         nombreGenes = premiersGenes.size();
@@ -51,7 +51,7 @@ public:
     virtual ~Individu(){};
 
     // permet de remplir les gènes d'un individu donné + récup la taille du vecteur de gènes
-    void setGenes(vector<double> nouveauxGenes)
+    void setGenes(vector<int> nouveauxGenes)
     {
         genes = nouveauxGenes;
         nombreGenes = nouveauxGenes.size();
@@ -141,7 +141,7 @@ public:
     }
 
     void print(ostream &out) const;
-    void remplacerIndividu(int index, Individu* nouvelIndividu);
+    void remplacerIndividu(int index, Individu *nouvelIndividu);
 };
 
 // fonction qui trie la population selon la fonction d'adaptation
