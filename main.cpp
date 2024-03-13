@@ -43,10 +43,11 @@ Population algogenetique(Population &Pop_initiale, int nb_iter, int nb_reproduct
     Population parents_selectionnes;
     Population enfants;
     Population parents_conserves;
-
+    Population triee;
     //====================================================================================================================================
     //                          iteration jusqu'à fin (critère d'arret )
     //====================================================================================================================================
+
     while (k < nb_iter)
     {
         //====================================================================================================================================
@@ -95,6 +96,7 @@ Population algogenetique(Population &Pop_initiale, int nb_iter, int nb_reproduct
         //====================================================================================================================================
 
         population_parents = enfants;
+
         k = k + 1;
     };
 
@@ -156,7 +158,7 @@ int main()
     // paths.print(cout);
 
     int nombre_iterations = 4;
-    int nombre_reproducteurs = 5;
+    int nombre_reproducteurs = 10;
 
     Population resultat = algogenetique(generee, nombre_iterations, nombre_reproducteurs);
     Population resultat_2 = trierPopulation(resultat);
