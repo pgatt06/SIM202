@@ -94,7 +94,7 @@ void Ville ::calcul_distance()
         {
             if (i == j)
             {
-                distances[i][j] = -1;
+                distances[i][j] = INFINITY;
             }
             else
             { // on applique à la ieme ligen et jieme colonne la distance entre les deux points (deux villes)
